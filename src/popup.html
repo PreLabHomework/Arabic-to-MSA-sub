@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arabic MSA Subtitles</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0d0d;
+      --surface:   #161616;
+      --border:    #242424;
+      --accent:    #2a9d8f;
+      --accent-dim: rgba(42, 157, 143, 0.15);
+      --text:      #f0f0f0;
+      --muted:     #666;
+      --danger:    #e76f51;
+    }
+
+    body {
+      width: 320px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Noto Naskh Arabic", serif;
+      font-size: 15px;
+    }
+
+    /* ── Header ── */
+    .header {
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: -0.05em;
+      flex-shrink: 0;
+    }
+
+    .header-text h1 {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .header-text p {
+      font-size: 11px;
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+      direction: ltr;
+    }
+
+    /* ── Main toggle ── */
+    .main-toggle {
+      margin: 16px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .toggle-label { font-size: 15px; font-weight: 600; }
+    .toggle-sub   { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    .switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: #333;
+      border-radius: 24px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 18px; height: 18px;
+      left: 3px; top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+    input:checked + .slider { background: var(--accent); }
+    input:checked + .slider::before { transform: translateX(20px); }
+
+    /* ── Status indicator ── */
+    .status-bar {
+      margin: 0 18px 14px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-family: "JetBrains Mono", monospace;
+      direction: ltr;
+      color: var(--muted);
+    }
+    .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--muted);
+      flex-shrink: 0;
+    }
+    .dot.active { background: var(--accent); box-shadow: 0 0 6px var(--accent); animation: pulse 1.5s infinite; }
+    .dot.error  { background: var(--danger); }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    /* ── Settings sections ── */
+    .section {
+      margin: 0 18px 14px;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-family: "JetBrains Mono", monospace;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      direction: ltr;
+      margin-bottom: 8px;
+    }
+
+    /* Mode buttons */
+    .mode-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .mode-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 8px 4px;
+      text-align: center;
+      font-size: 13px;
+      font-family: "Noto Naskh Arabic", serif;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .mode-btn:hover { border-color: var(--accent); color: var(--text); }
+    .mode-btn.active {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .mode-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+
+    /* Position toggle */
+    .pos-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .pos-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 8px;
+      text-align: center;
+      font-size: 13px;
+      font-family: "JetBrains Mono", monospace;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      direction: ltr;
+    }
+    .pos-btn:hover { border-color: var(--accent); color: var(--text); }
+    .pos-btn.active {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Font size slider */
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 10px 14px;
+    }
+    .size-preview {
+      font-family: "Noto Naskh Arabic", serif;
+      color: var(--accent);
+      min-width: 36px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 14px;
+      direction: ltr;
+    }
+    input[type=range] {
+      flex: 1;
+      accent-color: var(--accent);
+      height: 4px;
+    }
+
+    /* API Keys */
+    .key-field {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 10px 12px;
+      margin-bottom: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .key-label {
+      font-size: 10px;
+      font-family: "JetBrains Mono", monospace;
+      color: var(--muted);
+      direction: ltr;
+      letter-spacing: 0.05em;
+    }
+    .key-input {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      width: 100%;
+      outline: none;
+      direction: ltr;
+    }
+    .key-input::placeholder { color: #333; }
+
+    .save-btn {
+      width: 100%;
+      padding: 10px;
+      background: var(--accent);
+      border: none;
+      border-radius: 7px;
+      color: #fff;
+      font-family: "Noto Naskh Arabic", serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      margin-top: 2px;
+    }
+    .save-btn:hover { opacity: 0.88; }
+    .save-btn:active { opacity: 0.7; }
+
+    /* ── Footer ── */
+    .footer {
+      padding: 10px 18px 14px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+      direction: ltr;
+      text-align: center;
+    }
+
+    .error-msg {
+      color: var(--danger);
+      font-size: 12px;
+      padding: 6px 18px;
+      font-family: "JetBrains Mono", monospace;
+      direction: ltr;
+      display: none;
+    }
+    .error-msg.visible { display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">MSA</div>
+    <div class="header-text">
+      <h1>ترجمة فصحى</h1>
+      <p>arabic dialect → msa subtitles</p>
+    </div>
+  </div>
+
+  <!-- Main on/off toggle -->
+  <div class="main-toggle">
+    <div>
+      <div class="toggle-label">تفعيل الترجمة</div>
+      <div class="toggle-sub" id="toggle-hint">اضغط لبدء الترجمة الفورية</div>
+    </div>
+    <label class="switch">
+      <input type="checkbox" id="main-toggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <!-- Status -->
+  <div class="status-bar">
+    <div class="dot" id="status-dot"></div>
+    <span id="status-text">inactive</span>
+  </div>
+
+  <div class="error-msg" id="error-msg"></div>
+
+  <!-- Display mode -->
+  <div class="section">
+    <div class="section-title">display mode</div>
+    <div class="mode-group">
+      <button class="mode-btn active" data-mode="overlay">
+        <span class="mode-icon">🎬</span>على الفيديو
+      </button>
+      <button class="mode-btn" data-mode="sidebar">
+        <span class="mode-icon">📋</span>شريط جانبي
+      </button>
+      <button class="mode-btn" data-mode="both">
+        <span class="mode-icon">⊞</span>كلاهما
+      </button>
+    </div>
+  </div>
+
+  <!-- Subtitle position (overlay only) -->
+  <div class="section" id="pos-section">
+    <div class="section-title">overlay position</div>
+    <div class="pos-group">
+      <button class="pos-btn active" data-pos="bottom">▼ bottom</button>
+      <button class="pos-btn" data-pos="top">▲ top</button>
+    </div>
+  </div>
+
+  <!-- Font size -->
+  <div class="section">
+    <div class="section-title">font size</div>
+    <div class="slider-row">
+      <span class="size-preview" id="size-preview">22px</span>
+      <input type="range" id="font-size" min="14" max="36" value="22">
+    </div>
+  </div>
+
+  <!-- API Keys -->
+  <div class="section">
+    <div class="section-title">api keys</div>
+    <div class="key-field">
+      <span class="key-label">OPENAI_API_KEY (Whisper STT)</span>
+      <input class="key-input" type="password" id="openai-key" placeholder="sk-...">
+    </div>
+    <div class="key-field">
+      <span class="key-label">ANTHROPIC_API_KEY (Claude MSA)</span>
+      <input class="key-input" type="password" id="anthropic-key" placeholder="sk-ant-...">
+    </div>
+    <button class="save-btn" id="save-keys">حفظ المفاتيح</button>
+  </div>
+
+  <div class="footer">youtube only · manifest v3 · v1.0.0</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

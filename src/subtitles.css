@@ -1,0 +1,89 @@
+/* subtitles.css — injected into YouTube watch pages */
+
+/* ── Overlay (on-video subtitles) ─────────────────────────────────────── */
+#msa-overlay {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 10%;
+  z-index: 9999;
+  max-width: 80%;
+  text-align: center;
+
+  font-family: "Noto Naskh Arabic", "Amiri", "Traditional Arabic", serif;
+  font-size: 22px;
+  line-height: 1.6;
+  color: #ffffff;
+
+  background: rgba(0, 0, 0, 0.72);
+  padding: 6px 18px 8px;
+  border-radius: 6px;
+  backdrop-filter: blur(2px);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+#msa-overlay.msa-visible {
+  opacity: 1;
+}
+
+/* ── Sidebar panel ────────────────────────────────────────────────────── */
+#msa-sidebar {
+  position: fixed;
+  top: 80px;
+  right: 0;
+  width: 280px;
+  z-index: 99999;
+
+  background: #0f0f0f;
+  border-left: 2px solid #2a9d8f;
+  border-radius: 8px 0 0 8px;
+  box-shadow: -4px 0 24px rgba(0,0,0,0.5);
+  overflow: hidden;
+
+  font-family: "Noto Naskh Arabic", "Amiri", serif;
+  direction: rtl;
+}
+
+.msa-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #1a1a1a;
+  border-bottom: 1px solid #222;
+}
+
+.msa-sidebar-title {
+  font-family: "Noto Naskh Arabic", serif;
+  font-size: 14px;
+  color: #aaa;
+  letter-spacing: 0.03em;
+}
+
+.msa-sidebar-badge {
+  font-family: monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: #2a9d8f;
+  background: rgba(42, 157, 143, 0.12);
+  border: 1px solid rgba(42, 157, 143, 0.3);
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.1em;
+}
+
+.msa-sidebar-text {
+  padding: 14px 16px;
+  font-size: 18px;
+  line-height: 1.8;
+  color: #f0f0f0;
+  min-height: 80px;
+  transition: background 0.3s ease;
+}
+
+.msa-sidebar-text.msa-flash {
+  background: rgba(42, 157, 143, 0.08);
+}
