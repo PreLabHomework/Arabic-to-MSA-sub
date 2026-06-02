@@ -1,4 +1,4 @@
-# Arabic MSA Subtitles — Chrome Extension
+# Arabic MSA Subtitles: Chrome Extension
 
 Live Arabic dialect → MSA subtitle overlay for YouTube.
 
